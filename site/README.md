@@ -23,7 +23,7 @@ Navy/teal with a gold accent. Fonts are self-hosted (Inter, Instrument Serif; SI
 ```
 node tests/run.js        # Node 18+, no dependencies
 ```
-Covers Shamir (all k-subsets, too few shares, mixed plans, typos), letter lock/unlock (wrong passphrase, tampering, a fixture made by `letter.html`), the full letter + split + claim round trip, the check-in schedule, the secret guard, and the strength/brute-force maths (20 tests, including checks that only the quiz page can contact the counter and that the demo pages still block all network connections).
+Covers Shamir (all k-subsets, too few shares, mixed plans, typos), letter lock/unlock (wrong passphrase, tampering, a fixture made by `letter.html`), the full letter + split + claim round trip, the check-in schedule, the secret guard, and the strength/brute-force maths (21 tests, including checks that only the quiz page can contact the counter, that the demo pages still block all network connections, and that the error pages are self-contained).
 
 Shares can also be combined without this site: `tools/combine_shares.py.txt` (rename to `.py`).
 

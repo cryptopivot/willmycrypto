@@ -218,5 +218,20 @@ function subsets(arr, k) { const out = []; (function rec(s, cur) { if (cur.lengt
     for (const w of ["Simple counts", "one number per day", "There is no IP address", "no cookie", "no outside service", "a quiz was started", "Do Not Track", "are not part of any counting"])
       assert.ok(p.includes(w), "privacy.html should say: " + w);
   });
+  await t("Error pages: 403, 404, 500, 503 are noindex, self-contained, use root-relative links and link home, quiz and contact", () => {
+    const root = path.join(__dirname, "..");
+    for (const code of ["403", "404", "500", "503"]) {
+      const h = fs.readFileSync(path.join(root, code + ".html"), "utf8");
+      assert.ok(h.includes("Error " + code), code + " names its error");
+      assert.ok(/<meta name="robots" content="noindex,nofollow">/.test(h), code + " noindex");
+      assert.ok(/connect-src 'none'/.test(h) && /form-action 'none'/.test(h), code + " blocks network connections");
+      assert.ok(!/(https?:)?\/\/(?!www\.w3\.org|willmycrypto\.com)[a-z0-9.-]+\.[a-z]{2,}/i.test(h.replace(/<meta property="og:[^>]*>/g, "")), code + " mentions an outside host");
+      assert.ok(!h.includes("count.php") && !/<form/i.test(h), code + " has no counter or form");
+      assert.ok(!h.includes("\u2014") && !h.includes("&mdash;"), code + " has an em dash");
+      for (const m of h.matchAll(/\b(?:href|src)="([^"]*)"/g)) assert.ok(/^(\/|#|https?:|mailto:)/.test(m[1]), code + " relative link would break on deep URLs: " + m[1]);
+      for (const need of ['href="/index.html"', 'href="/quiz.html"', 'href="/lawyers.html"']) assert.ok(h.includes(need), code + " links " + need);
+      assert.ok(!/src="\/js\/(?!fx\.js)/.test(h), code + " loads a script other than fx.js");
+    }
+  });
   console.log("\n" + passed + " tests passed");
 })().catch(e => { console.error("FAIL:", e && e.stack || e); process.exit(1); });
