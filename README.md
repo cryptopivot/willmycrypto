@@ -37,7 +37,7 @@ site/
 └── LICENSE.txt, README.md     License and a short technical overview
 ```
 
-The live site also runs a small server-side script for the partner and quiz-email forms. It is not part of this repository, so those forms do nothing when the files are used on their own.
+The live site also runs small server-side scripts: one for the partner and quiz-email forms, and one that keeps a daily tally of three events (a quiz started, a quiz email submitted, a partner form submitted). What is counted, and what is not, is written out in `site/privacy.html`; the counts hold no IP address, browser details or cookies. The scripts are not part of this repository, so those forms do nothing when the files are used on their own.
 
 ## Running the tests
 

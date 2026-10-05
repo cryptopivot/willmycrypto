@@ -163,5 +163,60 @@ function subsets(arr, k) { const out = []; (function rec(s, cur) { if (cur.lengt
     assert.strictEqual(St.verdict(10).label, "Very weak");
     assert.strictEqual(St.verdict(100).label, "Very strong");
   });
+  await t("Counter: only the quiz page's script can make network requests; demo pages stay blocked", () => {
+    const root = path.join(__dirname, "..");
+    for (const f of fs.readdirSync(path.join(root, "js")).filter(n => n.endsWith(".js"))) {
+      const src = fs.readFileSync(path.join(root, "js", f), "utf8");
+      const net = /fetch\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/.test(src);
+      assert.strictEqual(net, f === "quiz.js", f + (net ? " makes network requests" : " should not"));
+      assert.strictEqual(src.includes("count.php"), f === "quiz.js", f + " and count.php");
+    }
+    for (const f of fs.readdirSync(root).filter(n => n.endsWith(".html"))) {
+      const html = fs.readFileSync(path.join(root, f), "utf8");
+      assert.ok(!html.includes("count.php"), f + " mentions count.php");
+      assert.ok(!/<script[^>]*src="https?:/i.test(html), f + " loads an outside script");
+    }
+    for (const f of ["letter", "plan", "simulator", "claim", "encryption"]) {
+      const html = fs.readFileSync(path.join(root, f + ".html"), "utf8");
+      assert.ok(/connect-src 'none'/.test(html) && /form-action 'none'/.test(html), f + ".html must block network connections");
+    }
+  });
+  await t("Counter: quiz sends one bare 'quiz_start' signal on the first answer, nothing else, and honours Do Not Track", () => {
+    function run(navExtra) {
+      const sent = [], listeners = {};
+      function node() {
+        const n = { style: {}, children: [], attrs: {}, hidden: false, disabled: false, value: "", checked: false, textContent: "",
+          setAttribute(k, v) { n.attrs[k] = v; }, appendChild(c) { n.children.push(c); return c; },
+          addEventListener(ev, fn) { (n.handlers = n.handlers || {})[ev] = fn; } };
+        return n;
+      }
+      const nodes = {};
+      const ctx = {
+        window: { navigator: Object.assign({}, navExtra), scrollTo() {} },
+        document: { getElementById: id => nodes[id] || (nodes[id] = node()), createElement: () => node(), createTextNode: () => node(),
+          addEventListener(ev, fn) { listeners[ev] = fn; } },
+        fetch: (url, opt) => { sent.push({ url, body: String(opt.body), method: opt.method }); return Promise.resolve({ ok: true }); },
+        URLSearchParams, location: { reload() {} }, Object
+      };
+      ctx.window.navigator = ctx.window.navigator; ctx.window.window = ctx.window;
+      require("vm").runInNewContext(fs.readFileSync(path.join(__dirname, "..", "js", "quiz.js"), "utf8"), Object.assign(ctx, { navigator: ctx.window.navigator }));
+      listeners.DOMContentLoaded();
+      const radios = [];
+      (function walk(n) { if (n.attrs && n.attrs.type === "radio") radios.push(n); (n.children || []).forEach(walk); })(nodes.questions);
+      assert.ok(radios.length >= 10, "found quiz radios");
+      radios[0].handlers.change(); radios[1].handlers.change(); radios[5].handlers.change();
+      return sent;
+    }
+    let sent = run({});
+    assert.strictEqual(sent.length, 1, "exactly one signal for several answers");
+    assert.deepStrictEqual(sent[0], { url: "count.php", body: "e=quiz_start", method: "POST" });
+    assert.strictEqual(run({ doNotTrack: "1" }).length, 0, "Do Not Track");
+    assert.strictEqual(run({ globalPrivacyControl: true }).length, 0, "Global Privacy Control");
+  });
+  await t("Counter: privacy page says what is counted", () => {
+    const p = fs.readFileSync(path.join(__dirname, "..", "privacy.html"), "utf8");
+    for (const w of ["Simple counts", "one number per day", "There is no IP address", "no cookie", "no outside service", "a quiz was started", "Do Not Track", "are not part of any counting"])
+      assert.ok(p.includes(w), "privacy.html should say: " + w);
+  });
   console.log("\n" + passed + " tests passed");
 })().catch(e => { console.error("FAIL:", e && e.stack || e); process.exit(1); });

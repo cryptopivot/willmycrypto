@@ -1,6 +1,9 @@
 /* Will My Crypto - Inheritance Readiness Score. Runs entirely in your browser.
    Answers are never sent anywhere. Only if you choose to enter an email do we send
-   your email, score and band (not your answers) to our team. */
+   your email, score and band (not your answers) to our team.
+   One more thing is sent: when the first question is answered, a bare "quiz started" signal
+   (the text e=quiz_start and nothing else) so we can count how often the quiz is used.
+   It is skipped if your browser sends Do Not Track or Global Privacy Control. */
 (function(){
   "use strict";
   var PROFILE = [
@@ -53,6 +56,16 @@
     mix:"With a mix, list each type separately, because each is recovered differently."
   };
   var answers = {}, $ = function(id){ return document.getElementById(id); };
+  var counted = false;
+  function countStart(){
+    if (counted) return; counted = true;
+    var nav = window.navigator || {};
+    if (nav.doNotTrack === "1" || nav.globalPrivacyControl) return;
+    try {
+      var b = new URLSearchParams(); b.set("e", "quiz_start");
+      fetch("count.php", {method:"POST", body:b, headers:{"X-Requested-With":"fetch"}, keepalive:true}).catch(function(){});
+    } catch (e) {}
+  }
   function el(tag, attrs, text){
     var e = document.createElement(tag);
     if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
@@ -67,7 +80,7 @@
       var id = def.id + "_" + i;
       var lab = el("label", {"class":"opt", "for":id});
       var inp = el("input", {type:"radio", name:def.id, id:id, value:String(i)});
-      inp.addEventListener("change", function(){ answers[def.id] = scored ? i : o[0]; progress(); });
+      inp.addEventListener("change", function(){ countStart(); answers[def.id] = scored ? i : o[0]; progress(); });
       lab.appendChild(inp); lab.appendChild(el("span", null, scored ? o[0] : o[1]));
       fs.appendChild(lab);
     });
