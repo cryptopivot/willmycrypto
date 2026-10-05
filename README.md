@@ -2,7 +2,7 @@
 
 Plain-language tools that help people plan how the people they love could recover their crypto if something happens to them. This repository holds the source of the browser tools behind [willmycrypto.com](https://willmycrypto.com).
 
-> **Early preview.** The site is a noindex preview. It never holds, moves or sees your crypto, keys or seed phrase, and it is a planning and education tool. **These tools have not had an independent security review.** As on any web page, never type a real seed phrase, private key or wallet password into them. Nothing here is legal, tax or financial advice.
+> **Early preview.** It never holds, moves or sees your crypto, keys or seed phrase, and it is a planning and education tool. **These tools have not had an independent security review.** As on any web page, never type a real seed phrase, private key or wallet password into them. Nothing here is legal, tax or financial advice.
 
 ## What the project is
 
@@ -33,7 +33,8 @@ site/
 ├── .well-known/security.txt   How to report a problem
 ├── checksums.txt              SHA-256 of the served files
 ├── make-checksums.sh          Regenerates checksums.txt
-├── robots.txt                 Asks search engines not to index the preview
+├── robots.txt, sitemap.xml    Open to search engines; the sitemap lists the public pages
+├── google*.html               Google Search Console verification file
 └── LICENSE.txt, README.md     License and a short technical overview
 ```
 

@@ -244,5 +244,30 @@ function subsets(arr, k) { const out = []; (function rec(s, cur) { if (cur.lengt
       assert.ok(/Do NOT type a seed phrase, private key, or wallet password/.test(fs.readFileSync(path.join(root, f), "utf8")), f + " lost its seed phrase warning");
     assert.ok(/never holds, moves or sees your crypto/.test(fs.readFileSync(path.join(root, "disclaimer.html"), "utf8")));
   });
+  await t("Search: robots.txt allows all and names the sitemap; real pages are indexable with a plain canonical URL", () => {
+    const root = path.join(__dirname, "..");
+    const robots = fs.readFileSync(path.join(root, "robots.txt"), "utf8");
+    assert.ok(/^User-agent: \*$/m.test(robots) && /^Allow: \/$/m.test(robots) && !/^Disallow: *\/ *$/m.test(robots), "robots.txt must allow all");
+    assert.ok(/^Sitemap: https:\/\/willmycrypto\.com\/sitemap\.xml$/m.test(robots), "robots.txt names the sitemap");
+    const sm = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
+    assert.ok(sm.startsWith('<?xml version="1.0" encoding="UTF-8"?>') && sm.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">') && sm.trim().endsWith("</urlset>"), "sitemap shape");
+    const locs = [...sm.matchAll(/<loc>([^<]*)<\/loc>/g)].map(m => m[1]);
+    const errs = ["403.html", "404.html", "500.html", "503.html"], skip = errs.concat(["thanks.html"]);
+    const pages = fs.readdirSync(root).filter(n => n.endsWith(".html") && !n.startsWith("google"));
+    const url = f => "https://willmycrypto.com/" + (f === "index.html" ? "" : f);
+    for (const f of pages) {
+      const h = fs.readFileSync(path.join(root, f), "utf8");
+      if (errs.includes(f)) { assert.ok(!/rel="canonical"/.test(h), f + " error page has no canonical"); continue; }
+      assert.ok(!/noindex/i.test(h), f + " must not be noindex");
+      const c = [...h.matchAll(/<link rel="canonical" href="([^"]*)">/g)].map(m => m[1]);
+      assert.deepStrictEqual(c, [url(f)], f + " canonical");
+      if (!skip.includes(f)) assert.ok(locs.includes(url(f)), f + " missing from sitemap.xml");
+    }
+    for (const l of locs) { assert.ok(/^https:\/\/willmycrypto\.com\/([a-z]+\.html)?$/.test(l) && !l.endsWith("index.html"), "sitemap URL form: " + l); const f = l.replace("https://willmycrypto.com/", "") || "index.html"; assert.ok(fs.existsSync(path.join(root, f)) && !skip.includes(f), "sitemap lists a real page: " + l); }
+    assert.strictEqual(new Set(locs).size, locs.length, "no duplicate sitemap URLs");
+    assert.strictEqual(fs.readFileSync(path.join(root, "google61256378fec7394e.html"), "utf8"), "google-site-verification: google61256378fec7394e.html", "Search Console file kept");
+    const ht = path.join(root, ".htaccess");
+    if (fs.existsSync(ht)) assert.ok(!/X-Robots-Tag/i.test(fs.readFileSync(ht, "utf8")), ".htaccess must not send X-Robots-Tag");
+  });
   console.log("\n" + passed + " tests passed");
 })().catch(e => { console.error("FAIL:", e && e.stack || e); process.exit(1); });

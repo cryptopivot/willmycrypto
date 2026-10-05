@@ -23,9 +23,12 @@ Navy/teal with a gold accent. Fonts are self-hosted (Inter, Instrument Serif; SI
 ```
 node tests/run.js        # Node 18+, no dependencies
 ```
-Covers Shamir (all k-subsets, too few shares, mixed plans, typos), letter lock/unlock (wrong passphrase, tampering, a fixture made by `letter.html`), the full letter + split + claim round trip, the check-in schedule, the secret guard, and the strength/brute-force maths (22 tests, including checks that only the quiz page can contact the counter, that the demo pages still block all network connections, and that the error pages are self-contained).
+Covers Shamir (all k-subsets, too few shares, mixed plans, typos), letter lock/unlock (wrong passphrase, tampering, a fixture made by `letter.html`), the full letter + split + claim round trip, the check-in schedule, the secret guard, and the strength/brute-force maths (23 tests, including checks that only the quiz page can contact the counter, that the demo pages still block all network connections, that the error pages are self-contained, and that robots.txt, sitemap.xml and the canonical links stay correct).
 
 Shares can also be combined without this site: `tools/combine_shares.py.txt` (rename to `.py`).
+
+## Search engines
+The site is open to search engines. `robots.txt` allows everything and points to `sitemap.xml`, which lists the public pages. Each page has a canonical link to its plain https://willmycrypto.com/ URL (the home page is `/`, not `/index.html`). Only the error pages are noindex. `google61256378fec7394e.html` is the Google Search Console verification file; keep it in place.
 
 ## Checksums
 `./make-checksums.sh` regenerates `checksums.txt` (SHA-256 of each served file).
