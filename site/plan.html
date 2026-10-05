@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plan demo (prototype) | Will My Crypto</title>
+<meta name="description" content="A prototype that sets up a check-in plan, locks a letter, and splits the passphrase into shares, all in your browser.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#061320">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta property="og:type" content="website"><meta property="og:site_name" content="Will My Crypto"><meta property="og:title" content="Plan demo (prototype) | Will My Crypto"><meta property="og:description" content="A prototype that sets up a check-in plan, locks a letter, and splits the passphrase into shares, all in your browser."><meta property="og:image" content="https://willmycrypto.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=20261004c"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+</head><body class="tool">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site"><div class="wrap"><a class="brand" href="index.html"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a><nav aria-label="Main"><a href="index.html">Home</a><a href="quiz.html">Readiness quiz</a><a href="plan.html" aria-current="page">Try the flow</a><a href="encryption.html">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href="trust.html">Trust the code</a></nav></div></header>
+<div class="notice">Early preview. This service is still in development and is not open for accounts.</div>
+<div class="stepstrip"><div class="wrap"><b>Prototype flow:</b><a href="letter.html">1 Letter</a><a href="plan.html" aria-current="page">2 Plan</a><a href="simulator.html">3 Simulator</a><a href="claim.html">4 Heir claim</a></div></div>
+<main id="main">
+<div class="page"><div class="wrap" style="max-width:860px">
+<h1>Plan demo <span class="proto">Prototype</span></h1>
+<p class="lead">Set up a check-in plan the way the real service is meant to work: who your heirs are, how often you check in, how the warnings escalate, and a locked letter whose passphrase is split so that no single person can open it. It all happens in this browser tab. Nothing is sent, saved on a server, or emailed.</p>
+<div class="danger"><strong>Do NOT type a seed phrase, private key, or wallet password anywhere on this page.</strong>This is a prototype to show how the flow works. Use made-up text. Do not rely on it for real funds. It has not had an independent security review.</div>
+<p id="nocrypto" hidden class="warn">Your browser does not support the encryption features this page needs. Try a current Firefox, Chrome, Safari, or Edge over https.</p>
+<div id="app">
+<p><button class="btn ghost2 mini" id="sample" type="button">Fill in a sample</button></p>
+<form class="f" onsubmit="return false" style="max-width:none">
+<h2>1. Your heirs</h2>
+<label for="heirs">Heir names <small>(one per line, up to 8)</small></label>
+<textarea id="heirs" style="min-height:90px" placeholder="Anna Example&#10;Ben Example" autocomplete="off"></textarea>
+<h2 style="margin-top:28px">2. Check-ins and escalation</h2>
+<div class="fieldrow">
+<div><label for="interval">Check in every <small>(days)</small></label><select id="interval"><option>30</option><option>60</option><option selected>90</option><option>180</option><option>365</option></select></div>
+<div><label for="r2">Second reminder <small>(days after a miss)</small></label><input id="r2" type="number" min="1" max="300" value="7"></div>
+<div><label for="tc">Trusted-contact notice <small>(days after a miss)</small></label><input id="tc" type="number" min="2" max="360" value="28"></div>
+<div><label for="grace">Grace period before release <small>(days after a miss)</small></label><input id="grace" type="number" min="14" max="365" value="45"></div>
+</div>
+<p class="qnote" style="margin-top:10px">Order of events after a missed check-in: reminder on day 0, second reminder, a trusted person is asked to confirm you're okay, and only at the end of the grace period is the locked letter released. You can cancel at every step before release.</p>
+<h2 style="margin-top:28px">3. Your letter of instruction</h2>
+<label for="letter">Letter <small>(where things are and what to do. No secrets.)</small></label>
+<textarea id="letter" class="mono" style="min-height:170px" autocomplete="off" spellcheck="false" placeholder="Where things are, who to call, what to do first."></textarea>
+<h2 style="margin-top:28px">4. Lock it and split the key</h2>
+<fieldset class="plain"><legend class="qnote">Passphrase for the locked letter</legend>
+<label class="opt"><input type="radio" name="pm" id="pm-gen" checked><span>Make a strong random passphrase for me (recommended)</span></label>
+<label class="opt"><input type="radio" name="pm" id="pm-own"><span>I'll choose my own</span></label>
+</fieldset>
+<div id="ownwrap" hidden><label for="ownpass">Your passphrase <small>(12+ characters)</small></label><input id="ownpass" type="password" autocomplete="new-password"><div class="meter" data-for="ownpass"></div></div>
+<div class="fieldrow">
+<div><label for="k">Shares needed to open (k)</label><input id="k" type="number" min="2" max="10" value="3"></div>
+<div><label for="n">Total shares (n)</label><input id="n" type="number" min="2" max="10" value="5"></div>
+</div>
+<p class="qnote" style="margin-top:8px">The passphrase is never given to anyone whole. It is cut into <em>n</em> shares, and any <em>k</em> of them put it back together. Fewer than <em>k</em> reveal nothing.</p>
+<p><button class="btn" id="go" type="button">Lock my letter and make shares</button></p>
+<div class="status" id="status" aria-live="polite"></div>
+</form>
+<div id="results" hidden>
+<h2>Your plan</h2>
+<ul id="summary"></ul>
+<h2>The locked letter</h2>
+<p class="lead">Safe to store anywhere, including with us. Useless without enough shares.</p>
+<textarea id="block" class="mono" readonly style="min-height:140px" aria-label="Locked letter"></textarea>
+<div id="genwrap"><label for="genpass">Generated passphrase <small>(only on this page; shown so you can check your work, not needed by heirs)</small></label>
+<div class="row"><input id="genpass" type="password" readonly><button class="btn ghost2 mini" id="showgen" type="button">Show</button></div></div>
+<h2>The shares</h2>
+<p class="lead">Give each share to a different person or place. Any <em>k</em> open the letter; keep them apart.</p>
+<div id="shares"></div>
+<p><button class="btn ghost2 mini" id="dl" type="button">Download everything as a text file</button></p>
+<p class="callout">Next: <a href="simulator.html" id="simlink">watch this plan run in the simulator</a>, then <a href="claim.html">try the heir claim</a> using the shares above.</p>
+</div>
+<p style="margin-top:20px"><button class="btn ghost2 mini" id="clear" type="button">Clear everything on this page</button> <small style="color:var(--mut)">Your plan settings (not the letter or shares) are passed to the simulator in the page link and kept in this tab only. Nothing is stored on a server.</small></p>
+</div>
+<h2 style="margin-top:36px">What the real service would add</h2>
+<p>Real email and text reminders, one-tap check-ins, trusted-contact confirmation, and the actual delivery of the locked letter to your heirs. None of that exists yet. See <a href="trust.html">Trust the code</a> for exactly what this prototype does.</p>
+</div></div>
+<script src="js/strength.js?v=20261004c"></script><script src="js/meter.js?v=20261004c"></script><script src="js/guard.js?v=20261004c"></script><script src="js/wmc-crypto.js?v=20261004c"></script><script src="js/shamir.js?v=20261004c"></script><script src="js/sim-core.js?v=20261004c"></script><script src="js/plan.js?v=20261004c"></script>
+
+</main>
+<footer class="site"><div class="wrap">
+<div class="fb"><a href="index.html" aria-label="Will My Crypto home"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a>
+<p class="disc">Will My Crypto provides planning tools and information only. It is not a law firm, financial advisor, custodian, or wallet provider, and does not give legal, tax, or financial advice. No tool can guarantee that digital assets will be recoverable. Laws vary by location; consult a qualified attorney and tax professional. Never share your seed phrase or private keys with anyone, including us.</p></div>
+<p class="links"><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a><a href="trust.html">Trust the code</a><a href="LICENSE.txt">MIT license</a><a href="quiz.html">Readiness quiz</a><a href="letter.html">Letter demo</a><a href="plan.html">Plan demo</a><a href="simulator.html">Simulator</a><a href="claim.html">Heir claim</a><a href="encryption.html">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href=".well-known/security.txt">Security</a></p>
+<p class="copy">&copy; Will My Crypto</p>
+</div></footer>
+<script src="js/fx.js?v=20261004c"></script>
+</body></html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Check-in simulator (prototype) | Will My Crypto</title>
+<meta name="description" content="A time-lapse simulation of missed check-ins, escalation steps, and the release of a locked letter.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#061320">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta property="og:type" content="website"><meta property="og:site_name" content="Will My Crypto"><meta property="og:title" content="Check-in simulator (prototype) | Will My Crypto"><meta property="og:description" content="A time-lapse simulation of missed check-ins, escalation steps, and the release of a locked letter."><meta property="og:image" content="https://willmycrypto.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=20261004c"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+</head><body class="tool">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site"><div class="wrap"><a class="brand" href="index.html"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a><nav aria-label="Main"><a href="index.html">Home</a><a href="quiz.html">Readiness quiz</a><a href="plan.html" aria-current="page">Try the flow</a><a href="encryption.html">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href="trust.html">Trust the code</a></nav></div></header>
+<div class="notice">Early preview. This service is still in development and is not open for accounts.</div>
+<div class="stepstrip"><div class="wrap"><b>Prototype flow:</b><a href="letter.html">1 Letter</a><a href="plan.html">2 Plan</a><a href="simulator.html" aria-current="page">3 Simulator</a><a href="claim.html">4 Heir claim</a></div></div>
+<main id="main">
+<div class="page"><div class="wrap" style="max-width:900px">
+<h1>Check-in simulator <span class="proto">Prototype</span></h1>
+<p class="lead">A time-lapse of what the check-in switch is meant to do. Days speed by. First the owner checks in on schedule. Then you can make them go quiet and watch each warning fire, until the locked letter would be released. Or press <strong>False alarm</strong> to see how a single check-in stops everything. Nothing is sent. This is a model, not a live service.</p>
+<p class="warn" id="fromplan" hidden>Using the settings from your <a href="plan.html">plan</a>.</p>
+<p class="qnote" id="planline"></p>
+<div class="card" style="margin-top:14px">
+<div style="display:flex;gap:26px;align-items:center;flex-wrap:wrap"><div><div class="qnote">Day</div><div class="daybig" id="day">0</div></div><div style="flex:1;min-width:220px"><div id="state" aria-live="polite" style="font-weight:600;color:var(--navy)"></div>
+<div class="track"><div class="fill" id="fill"></div></div></div></div>
+<div class="controls">
+<button class="btn mini" id="play" type="button">Pause</button>
+<label for="speed" style="margin:0">Speed</label>
+<select id="speed"><option value="2">Slow</option><option value="5" selected>Normal</option><option value="20">Fast</option><option value="60">Very fast</option></select>
+<button class="btn ghost2 mini" id="silentbtn" type="button">Owner goes quiet</button>
+<button class="btn ghost2 mini" id="falsebtn" type="button" disabled>False alarm: owner checks in</button>
+<button class="btn ghost2 mini" id="reset" type="button">Start over</button>
+</div>
+<div id="steps"></div>
+</div>
+<h2 style="margin-top:28px">What happened</h2>
+<ul class="log" id="log" aria-live="polite"></ul>
+<div id="after" hidden class="callout"><strong>The letter has been released, but the heirs still can't open it.</strong> They need <em>k</em> of the shares you handed out. If this were a mistake, the real service is designed to warn the owner many times and ask a trusted person first, which is why release is the last step. <a href="claim.html">Try the heir claim</a>.</div>
+<p class="callout">The false-alarm button works until release. After release there is no undo, which is why the grace period is long and the earlier steps use more than one channel.</p>
+</div></div>
+<script src="js/sim-core.js?v=20261004c"></script><script src="js/simulator.js?v=20261004c"></script>
+
+</main>
+<footer class="site"><div class="wrap">
+<div class="fb"><a href="index.html" aria-label="Will My Crypto home"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a>
+<p class="disc">Will My Crypto provides planning tools and information only. It is not a law firm, financial advisor, custodian, or wallet provider, and does not give legal, tax, or financial advice. No tool can guarantee that digital assets will be recoverable. Laws vary by location; consult a qualified attorney and tax professional. Never share your seed phrase or private keys with anyone, including us.</p></div>
+<p class="links"><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a><a href="trust.html">Trust the code</a><a href="LICENSE.txt">MIT license</a><a href="quiz.html">Readiness quiz</a><a href="letter.html">Letter demo</a><a href="plan.html">Plan demo</a><a href="simulator.html">Simulator</a><a href="claim.html">Heir claim</a><a href="encryption.html">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href=".well-known/security.txt">Security</a></p>
+<p class="copy">&copy; Will My Crypto</p>
+</div></footer>
+<script src="js/fx.js?v=20261004c"></script>
+</body></html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trust the code | Will My Crypto</title>
+<meta name="description" content="How Will My Crypto's browser tools work, what they never do, and how to check the code yourself.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#061320">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta property="og:type" content="website"><meta property="og:site_name" content="Will My Crypto"><meta property="og:title" content="Trust the code | Will My Crypto"><meta property="og:description" content="How Will My Crypto's browser tools work, what they never do, and how to check the code yourself."><meta property="og:image" content="https://willmycrypto.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=20261004c">
+</head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site"><div class="wrap"><a class="brand" href="index.html"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a><nav aria-label="Main"><a href="index.html">Home</a><a href="quiz.html">Readiness quiz</a><a href="plan.html">Try the flow</a><a href="encryption.html">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href="trust.html" aria-current="page">Trust the code</a></nav></div></header>
+<div class="notice">Early preview. This service is still in development and is not open for accounts.</div>
+<main id="main">
+<div class="page"><div class="wrap" style="max-width:820px">
+<h1>Trust the code</h1>
+<p class="lead">A service about your family's crypto should not ask for blind trust. So we are building this one so that you can check it.</p>
+<h2>What we commit to</h2>
+<ul>
+<li><strong>The browser tools are plain, readable files.</strong> The quiz and the letter demo are ordinary HTML, CSS and JavaScript. There is no build step, no minifying, and no outside libraries. What you see with &ldquo;view source&rdquo; is what runs.</li>
+<li><strong>No outside scripts, fonts, trackers, or analytics.</strong> The letter page also tells your browser to block all network connections (a Content Security Policy), so even a mistake could not send your text anywhere.</li>
+<li><strong>MIT licensed.</strong> The code is released under the <a href="LICENSE.txt">MIT license</a>: you may use, copy, change and share it. A public repository is planned; until then, the files on this site are the complete source, and <a href="README.md">README.md</a> explains the layout. A checksum list is below so you can confirm nothing changes quietly.</li>
+<li><strong>Open formats, so you never depend on us.</strong> The locked letter format is documented below, and you can open one with standard tools.</li>
+</ul>
+<h2>What this does not mean</h2>
+<p>Open code is not the same as audited code. <strong>These tools have not had an independent security review.</strong> We will say so plainly until one is done and published. Please report problems through the contact in <a href=".well-known/security.txt">security.txt</a>.</p>
+<h2>Check it yourself</h2>
+<ol>
+<li>Open your browser's developer tools, go to the Network tab, and use the letter demo. You should see no requests after the page loads.</li>
+<li>Read <code>js/letter.js</code> and <code>js/quiz.js</code>. They are short.</li>
+<li>Compare the files to the <a href="checksums.txt">SHA-256 checksum list</a>.</li>
+<li>Read the <a href="tests/run.js">tests</a> (<code>node tests/run.js</code>, Node 18 or later). They cover the secret splitting, the locking, and the check-in schedule.</li>
+</ol>
+<h2 id="format">The locked letter format (version 1)</h2>
+<p>The block between the BEGIN and END lines is Base64 text of a JSON object:</p>
+<pre>{"v":1,"alg":"AES-256-GCM","kdf":"PBKDF2-SHA256",
+ "iter":600000,"salt":"&lt;base64, 16 bytes&gt;",
+ "iv":"&lt;base64, 12 bytes&gt;","ct":"&lt;base64 ciphertext + 16-byte tag&gt;"}</pre>
+<p>The key is PBKDF2-HMAC-SHA256 of your passphrase (Unicode NFKC, UTF-8) with the salt and iteration count shown, 32 bytes long. The cipher is AES-256-GCM with the given 12-byte IV and the associated data <code>wmc-letter-v1</code>. To open one on your own computer with Python and the <code>cryptography</code> package:</p>
+<pre>import base64, json, sys, unicodedata, getpass
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+
+text = open(sys.argv[1]).read()
+body = "".join(l for l in text.splitlines() if not l.startswith("-----"))
+o = json.loads(base64.b64decode(body))
+pw = unicodedata.normalize("NFKC", getpass.getpass()).encode()
+key = PBKDF2HMAC(hashes.SHA256(), 32, base64.b64decode(o["salt"]), o["iter"]).derive(pw)
+print(AESGCM(key).decrypt(base64.b64decode(o["iv"]), base64.b64decode(o["ct"]), b"wmc-letter-v1").decode())</pre>
+<h2>Why not Argon2?</h2>
+<p>Argon2 is stronger against guessing machines, but browsers do not include it, and we do not want to ship a large third-party library for a first version. PBKDF2 with 600,000 or more rounds is what browsers support natively. A long passphrase matters more than any setting here.</p>
+<h2 id="shamir">Splitting the passphrase (Shamir)</h2>
+<p>The plan demo cuts the passphrase into shares with Shamir's Secret Sharing over the field GF(256) (the same one AES uses). Any <em>k</em> of the <em>n</em> shares rebuild it; fewer give no information at all. A share looks like <code>WMC1.&lt;plan id&gt;.&lt;k&gt;.&lt;n&gt;.&lt;x&gt;.&lt;data&gt;.&lt;checksum&gt;</code>. The checksum catches typing mistakes, and the plan id catches shares mixed up from two plans. The code is in <code>js/shamir.js</code>, and <a href="tools/combine_shares.py.txt">a separate Python script</a> puts shares together without us. <strong>This is our own implementation of a well-known algorithm and has not been independently reviewed.</strong> For serious use, prefer an established standard such as SLIP-39 and a reviewed tool.</p>
+<h2>Files and checksums</h2>
+<p><a href="checksums.txt">checksums.txt</a> lists a SHA-256 hash for each file served from this site.</p>
+<p class="callout">We will never ask for your seed phrase or private keys, in any tool, on any page, now or later.</p>
+</div></div>
+
+</main>
+<footer class="site"><div class="wrap">
+<div class="fb"><a href="index.html" aria-label="Will My Crypto home"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a>
+<p class="disc">Will My Crypto provides planning tools and information only. It is not a law firm, financial advisor, custodian, or wallet provider, and does not give legal, tax, or financial advice. No tool can guarantee that digital assets will be recoverable. Laws vary by location; consult a qualified attorney and tax professional. Never share your seed phrase or private keys with anyone, including us.</p></div>
+<p class="links"><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a><a href="trust.html">Trust the code</a><a href="LICENSE.txt">MIT license</a><a href="quiz.html">Readiness quiz</a><a href="letter.html">Letter demo</a><a href="plan.html">Plan demo</a><a href="simulator.html">Simulator</a><a href="claim.html">Heir claim</a><a href="encryption.html">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href=".well-known/security.txt">Security</a></p>
+<p class="copy">&copy; Will My Crypto</p>
+</div></footer>
+<script src="js/fx.js?v=20261004c"></script>
+</body></html>

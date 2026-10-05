@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How hard is it to crack? | Will My Crypto</title>
+<meta name="description" content="Honest maths on how hard it is to guess a recovery phrase or passphrase, with a guess machine and a passphrase strength meter.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#061320">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta property="og:type" content="website"><meta property="og:site_name" content="Will My Crypto"><meta property="og:title" content="How hard is it to crack? | Will My Crypto"><meta property="og:description" content="Honest maths on how hard it is to guess a recovery phrase or passphrase, with a guess machine and a passphrase strength meter."><meta property="og:image" content="https://willmycrypto.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=20261004c"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+</head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site"><div class="wrap"><a class="brand" href="index.html"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a><nav aria-label="Main"><a href="index.html">Home</a><a href="quiz.html">Readiness quiz</a><a href="plan.html">Try the flow</a><a href="encryption.html" aria-current="page">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href="trust.html">Trust the code</a></nav></div></header>
+<div class="notice">Early preview. This service is still in development and is not open for accounts.</div>
+<main id="main">
+<div class="page"><div class="wrap">
+<span class="eyebrow">The honest maths <span class="proto">Prototype</span></span>
+<h1>How hard is it to crack?</h1>
+<p class="lead">Short answer: guessing a properly random 12 or 24 word recovery phrase is not realistic. Long answer: the numbers below, with every figure labelled as exact, estimated, or assumed. And the part that matters most: the real danger is almost never someone guessing a random seed.</p>
+<p class="callout"><strong>The real risks</strong> are weak or reused passphrases, phishing and fake support, shares or backups that get lost, and mistakes. Big numbers protect random secrets. They do nothing for guessable ones.</p>
+
+<h2 style="margin-top:56px">The numbers</h2>
+<div class="grid">
+<div class="card tilt"><span class="eyebrow">12-word recovery phrase</span><div class="bignum">2<sup>128</sup></div><p><strong>&asymp; <span data-crack="128,1,words"></span></strong> combinations. That is 128 bits of randomness; the last word also carries a checksum.</p><details class="vmath"><summary>Show the math</summary><ul><li>2<sup>128</sup> = <span data-crack="128,1,space"></span> (exact calculation)</li></ul></details></div>
+<div class="card tilt"><span class="eyebrow">24-word recovery phrase</span><div class="bignum">2<sup>256</sup></div><p><strong>&asymp; <span data-crack="256,1,words"></span></strong> combinations. Every extra bit doubles the work, so 256 bits is not twice as hard as 128; it is 2<sup>128</sup> times harder.</p><details class="vmath"><summary>Show the math</summary><ul><li>2<sup>256</sup> = <span data-crack="256,1,space"></span> (exact calculation)</li></ul></details></div>
+<div class="card tilt"><span class="eyebrow">For scale</span><div class="bignum">10<sup>78&ndash;82</sup></div><p>Common estimates for the number of atoms in the observable universe. So 2<sup>256</sup> is just a few powers of ten below that range. (Estimate, not exact.)</p></div>
+</div>
+
+<h2 style="margin-top:64px">Picture it: one grain of sand</h2>
+<p class="lead">Estimates put the number of grains of sand on Earth at about 7.5 &times; 10<sup>18</sup> (a popular estimate, not a precise count). Now imagine one of them is yours, and you must find it.</p>
+<canvas id="sand" class="sandcv" role="img" aria-label="Thousands of faint dots like grains of sand, with one gold dot that moves to a new place every few seconds"></canvas>
+<p class="qnote" style="margin-top:10px">Each dot is a grain. The gold one is the secret. It keeps moving, because a guesser does not know where to look.</p>
+<div class="grid">
+<div class="card"><h3>128 bits</h3><p>The same as choosing one grain out of the sand on <strong><span data-crack="128,1,earthswords"></span> Earths</strong>.</p><details class="vmath"><summary>Show the math</summary><ul><li>2<sup>128</sup> &divide; (7.5 &times; 10<sup>18</sup>) &asymp; <span data-crack="128,1,earths"></span> Earths</li></ul></details></div>
+<div class="card"><h3>256 bits</h3><p>The same as choosing one grain out of the sand on <strong><span data-crack="256,1,earthswords"></span> Earths</strong>.</p><details class="vmath"><summary>Show the math</summary><ul><li>2<sup>256</sup> &divide; (7.5 &times; 10<sup>18</sup>) &asymp; <span data-crack="256,1,earths"></span> Earths</li></ul></details></div>
+</div>
+
+<h2 style="margin-top:64px">The guess machine</h2>
+<p class="lead">Give an attacker a computer and see how long a brute-force search would take. We compute it live from real numbers: the age of the universe (about 13.8 billion years), the size of the search, and the speed you choose. We show the <em>average</em> time, which is half the search, since on average you find the answer halfway through.</p>
+<div class="card" style="margin-top:22px">
+<div class="controls" role="group" aria-label="Recovery phrase size">
+<button class="btn mini" type="button" data-bits="128" aria-pressed="true">12 words (128 bits)</button>
+<button class="btn ghost2 mini" type="button" data-bits="256" aria-pressed="false">24 words (256 bits)</button></div>
+<div class="rangewrap"><label for="rate" style="margin-top:0">Guesses per second the attacker can make: <strong id="rateval"></strong></label>
+<input id="rate" type="range" min="3" max="27" step="0.25" value="12">
+<div class="controls">
+<button class="btn ghost2 mini" type="button" data-exp="6">Laptop (generous)</button>
+<button class="btn ghost2 mini" type="button" data-exp="9">Gaming PC (generous)</button>
+<button class="btn ghost2 mini" type="button" data-exp="12">One trillion a second</button>
+<button class="btn ghost2 mini" type="button" data-exp="18">Giant supercomputer (hypothetical)</button>
+<button class="btn ghost2 mini" type="button" data-exp="27">Absurd (not buildable)</button></div></div>
+<div id="result" aria-live="polite" style="margin-top:6px"></div>
+<div class="cmp" aria-hidden="true"><div class="row2"><span>Age of the universe</span><div class="bar"><i id="bar-u"></i></div></div><div class="row2"><span>Time needed <small id="lab-n"></small></span><div class="bar"><i id="bar-n"></i></div></div></div>
+<p class="qnote" style="margin-top:6px">Bars use a log scale, so each step to the right is a billion billion times more. Honest caveats: this is the cost of <em>guessing</em>. Checking one wallet candidate takes thousands of operations, so real attackers are far slower than the raw figures. An exascale supercomputer does about a billion billion simple operations a second.</p>
+<p id="o-note" class="callout" style="margin-bottom:0"></p>
+</div>
+
+<h2 style="margin-top:64px">What actually goes wrong</h2>
+<div class="grid">
+<div class="card tilt"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3M12 15v2"/></svg></span><h3>Weak passphrases</h3><p>Words, names, dates and small tweaks like <code>Password1!</code> fall in seconds. Our meter below shows how fast.</p></div>
+<div class="card tilt"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 1 1 3.6 2.4c-.8.4-1.1 1-1.1 1.8M12 17h.01"/></svg></span><h3>Phishing and fake support</h3><p>Someone asks you, in a message or a convincing website, to type your seed phrase. The best encryption in the world cannot stop you handing it over.</p></div>
+<div class="card tilt"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5.5" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="19" cy="18.5" r="2"/><path d="M7 12c5 0 5-6.5 10-6.5M7 12h10M7 12c5 0 5 6.5 10 6.5"/></svg></span><h3>Lost or gathered shares</h3><p>If too many shares are lost, nobody can recover. If too many end up together, the split stops protecting you. Spread them out, and test.</p></div>
+<div class="card tilt"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></span><h3>Copies and mistakes</h3><p>A photo of a recovery phrase, an old backup in cloud notes, a malware-infected computer. These beat any maths.</p></div>
+</div>
+
+<h2 style="margin-top:64px">Passphrase strength meter</h2>
+<p class="lead">The encrypted letter is only as strong as its passphrase. The letter's key is derived with PBKDF2-SHA256 at 600,000 rounds, which makes every guess about 600,000 times more work than a plain hash. Even so, a weak passphrase falls fast. A long random one cannot be guessed.</p>
+<div class="card" style="max-width:760px">
+<div class="danger" style="margin-top:0"><strong>Try a made-up passphrase, not your real one.</strong>This runs only in your browser and nothing is sent, but get in the habit of never typing real secrets into test boxes.</div>
+<label for="tp" style="margin-top:6px">Passphrase to test</label>
+<div class="row"><input id="tp" type="password" autocomplete="off" spellcheck="false" placeholder="Type or pick an example"><button class="btn ghost2 mini" id="tp-show" type="button">Show</button></div>
+<div class="controls"><span class="qnote" style="margin:0">Try:</span>
+<button class="btn ghost2 mini" type="button" data-ex="weak">password123</button><button class="btn ghost2 mini" type="button" data-ex="leet">Tr0ub4dor&amp;3</button><button class="btn ghost2 mini" type="button" data-ex="words">four plain words</button><button class="btn ghost2 mini" type="button" data-ex="rnd">generated by the Plan demo</button></div>
+<div class="meter" data-for="tp"></div>
+<p class="qnote" style="margin-top:12px"><strong>How the estimate works.</strong> It looks at length and variety, then deducts for patterns attackers try first: very common passwords, words with digits swapped in, years, repeats and sequences. It assumes a patient attacker with 1,000 powerful graphics cards, about 10<sup>7</sup> guesses per second against 600,000-round PBKDF2 (a rough figure: one top consumer card manages around 10<sup>4</sup> per second). It is an estimate, and a human-chosen phrase is usually weaker than any formula says.</p>
+</div>
+
+<h2 style="margin-top:64px">What about quantum computers?</h2>
+<p>Quantum computers are a long-term consideration, mainly for some public-key algorithms such as the signatures many blockchains use today. For symmetric encryption such as the AES-256 used in the letter, the best known quantum attack is expected to cut the effective strength roughly in half (256 bits to about 128), which is still out of reach. Researchers and standards bodies are already preparing upgrades. This does not change the advice today: use a long random passphrase, keep shares apart, keep software updated, and review your plan every year.</p>
+
+<h2 style="margin-top:56px">Numbers and assumptions</h2>
+<ul>
+<li><strong>Exact:</strong> 2<sup>128</sup> &asymp; 3.4 &times; 10<sup>38</sup> and 2<sup>256</sup> &asymp; 1.16 &times; 10<sup>77</sup>.</li>
+<li><strong>Age of the universe:</strong> about 13.8 billion years (a measured estimate).</li>
+<li><strong>Atoms in the observable universe:</strong> commonly estimated between 10<sup>78</sup> and 10<sup>82</sup>.</li>
+<li><strong>Grains of sand on Earth:</strong> about 7.5 &times; 10<sup>18</sup> (a popular estimate).</li>
+<li><strong>Attacker speed:</strong> the slider is an assumption you choose, not a measurement. The graphics-card figure (about 10<sup>4</sup> guesses per second at 600,000 PBKDF2 rounds) is a rough estimate from public benchmarks.</li>
+<li>The code that computes all of this is <a href="js/strength.js">js/strength.js</a>, with tests in <a href="tests/run.js">tests/run.js</a>.</li>
+</ul>
+<p class="callout">This page is education, not a guarantee. A prototype tool and a passphrase estimate cannot promise your family will recover anything. See the <a href="disclaimer.html">disclaimer</a>.</p>
+<p><a class="btn" href="letter.html">Lock a letter with a strong passphrase</a> <a class="btn ghost2" href="plan.html">Try the whole flow</a></p>
+</div></div>
+<script src="js/strength.js?v=20261004c"></script><script src="js/meter.js?v=20261004c"></script><script src="js/crack.js?v=20261004c"></script>
+</main>
+<footer class="site"><div class="wrap">
+<div class="fb"><a href="index.html" aria-label="Will My Crypto home"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a>
+<p class="disc">Will My Crypto provides planning tools and information only. It is not a law firm, financial advisor, custodian, or wallet provider, and does not give legal, tax, or financial advice. No tool can guarantee that digital assets will be recoverable. Laws vary by location; consult a qualified attorney and tax professional. Never share your seed phrase or private keys with anyone, including us.</p></div>
+<p class="links"><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a><a href="trust.html">Trust the code</a><a href="LICENSE.txt">MIT license</a><a href="quiz.html">Readiness quiz</a><a href="letter.html">Letter demo</a><a href="plan.html">Plan demo</a><a href="simulator.html">Simulator</a><a href="claim.html">Heir claim</a><a href="encryption.html">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href=".well-known/security.txt">Security</a></p>
+<p class="copy">&copy; Will My Crypto</p>
+</div></footer>
+<script src="js/fx.js?v=20261004c"></script>
+</body></html>

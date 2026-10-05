@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Heir claim (prototype) | Will My Crypto</title>
+<meta name="description" content="A prototype showing how an heir would combine shares and open a locked letter in the browser.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#061320">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta property="og:type" content="website"><meta property="og:site_name" content="Will My Crypto"><meta property="og:title" content="Heir claim (prototype) | Will My Crypto"><meta property="og:description" content="A prototype showing how an heir would combine shares and open a locked letter in the browser."><meta property="og:image" content="https://willmycrypto.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=20261004c"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+</head><body class="tool">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site"><div class="wrap"><a class="brand" href="index.html"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a><nav aria-label="Main"><a href="index.html">Home</a><a href="quiz.html">Readiness quiz</a><a href="plan.html" aria-current="page">Try the flow</a><a href="encryption.html">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href="trust.html">Trust the code</a></nav></div></header>
+<div class="notice">Early preview. This service is still in development and is not open for accounts.</div>
+<div class="stepstrip"><div class="wrap"><b>Prototype flow:</b><a href="letter.html">1 Letter</a><a href="plan.html">2 Plan</a><a href="simulator.html">3 Simulator</a><a href="claim.html" aria-current="page">4 Heir claim</a></div></div>
+<main id="main">
+<div class="page"><div class="wrap" style="max-width:820px">
+<h1>Heir claim <span class="proto">Prototype</span></h1>
+<p class="lead">This is what an heir would do. Paste the shares you were given and the locked letter. The page puts the shares together to rebuild the passphrase and opens the letter. It happens in this browser tab, and nothing is sent anywhere.</p>
+<div class="danger"><strong>Do NOT type a seed phrase, private key, or wallet password anywhere on this page.</strong>This is a prototype to show how the flow works. Use made-up text. Do not rely on it for real funds. It has not had an independent security review.</div>
+<p id="nocrypto" hidden class="warn">Your browser does not support the encryption features this page needs.</p>
+<div id="app">
+<p><button class="btn ghost2 mini" id="sample" type="button">Fill in a sample to try it</button></p>
+<label for="shares">Shares <small>(one per line; each starts with WMC1.)</small></label>
+<textarea id="shares" class="mono" style="min-height:120px" spellcheck="false" autocomplete="off"></textarea>
+<label for="block">Locked letter</label>
+<textarea id="block" class="mono" style="min-height:140px" spellcheck="false" autocomplete="off"></textarea>
+<p><button class="btn" id="go" type="button">Put the shares together and open the letter</button></p>
+<div class="status" id="status" aria-live="polite"></div>
+<label for="out">The letter</label>
+<textarea id="out" class="mono" readonly style="min-height:180px"></textarea>
+<p><button class="btn ghost2 mini" id="clear" type="button">Clear everything on this page</button></p>
+</div>
+<h2 style="margin-top:34px">If this website is gone</h2>
+<p>The letter and the shares don't depend on us. <a href="trust.html#format">Trust the code</a> explains the formats, and <a href="tools/combine_shares.py.txt">a short Python script</a> puts shares together without this site.</p>
+</div></div>
+<script src="js/wmc-crypto.js?v=20261004c"></script><script src="js/shamir.js?v=20261004c"></script><script src="js/claim.js?v=20261004c"></script>
+
+</main>
+<footer class="site"><div class="wrap">
+<div class="fb"><a href="index.html" aria-label="Will My Crypto home"><img src="logo/logo-dark.svg" alt="Will My Crypto" width="212" height="40"></a>
+<p class="disc">Will My Crypto provides planning tools and information only. It is not a law firm, financial advisor, custodian, or wallet provider, and does not give legal, tax, or financial advice. No tool can guarantee that digital assets will be recoverable. Laws vary by location; consult a qualified attorney and tax professional. Never share your seed phrase or private keys with anyone, including us.</p></div>
+<p class="links"><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a><a href="trust.html">Trust the code</a><a href="LICENSE.txt">MIT license</a><a href="quiz.html">Readiness quiz</a><a href="letter.html">Letter demo</a><a href="plan.html">Plan demo</a><a href="simulator.html">Simulator</a><a href="claim.html">Heir claim</a><a href="encryption.html">How secure?</a><a href="lawyers.html">Lawyers &amp; partners</a><a href="resources.html">Resources</a><a href=".well-known/security.txt">Security</a></p>
+<p class="copy">&copy; Will My Crypto</p>
+</div></footer>
+<script src="js/fx.js?v=20261004c"></script>
+</body></html>

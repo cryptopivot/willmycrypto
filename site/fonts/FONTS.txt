@@ -1,0 +1,4 @@
+Fonts served from this site (self-hosted, no CDN), both under the SIL Open Font License 1.1:
+- Inter (variable, latin subset). Copyright (c) The Inter Project Authors. https://github.com/rsms/inter
+- Instrument Serif (latin subset, regular + italic). Copyright 2022 The Instrument Serif Project Authors. https://github.com/Instrument/instrument-serif
+The OFL 1.1 text is in OFL-instrument-serif.txt and applies to both.

@@ -1,0 +1,36 @@
+# Will My Crypto - combine shares WITHOUT the website (rename to combine_shares.py).
+# Usage: python3 combine_shares.py SHARE1 SHARE2 SHARE3 ...   (prints the passphrase)
+# Format: WMC1.<setid>.<k>.<n>.<x>.<base64url data>.<crc32>   GF(256), AES polynomial 0x11b.
+import sys, base64, zlib
+def mul(a, b):
+    r = 0
+    while b:
+        if b & 1: r ^= a
+        a <<= 1
+        if a & 0x100: a ^= 0x11b
+        b >>= 1
+    return r
+def inv(a):
+    r = 1
+    for _ in range(254): r = mul(r, a)   # a^254 = a^-1 in GF(256)
+    return r
+shares = []
+for t in sys.argv[1:]:
+    p = t.strip().split(".")
+    assert p[0] == "WMC1" and len(p) == 7, "bad share"
+    assert "%08x" % (zlib.crc32(".".join(p[:6]).encode()) & 0xffffffff) == p[6].lower(), "typo in a share"
+    shares.append((int(p[4]), base64.urlsafe_b64decode(p[5] + "=" * (-len(p[5]) % 4)), int(p[2]), p[1]))
+k = shares[0][2]
+assert len({s[3] for s in shares}) == 1, "shares are from different plans"
+use = list({s[0]: s for s in shares}.values())[:k]
+assert len(use) >= k, "need %d different shares" % k
+out = bytearray()
+for i in range(len(use[0][1])):
+    v = 0
+    for a, (xa, da, _, _) in enumerate(use):
+        num = den = 1
+        for b, (xb, _, _, _) in enumerate(use):
+            if a != b: num = mul(num, xb); den = mul(den, xa ^ xb)
+        v ^= mul(da[i], mul(num, inv(den)))
+    out.append(v)
+print(out.decode())
