@@ -2,7 +2,7 @@
 
 Plain-language tools that help people plan how the people they love could recover their crypto if something happens to them. This repository holds the source of the browser tools behind [willmycrypto.com](https://willmycrypto.com).
 
-> **Early preview.** The site is a noindex prototype and is not meant for real funds. **These tools have not had an independent security review.** Do not type a seed phrase or private key into them. Nothing here is legal, tax or financial advice.
+> **Early preview.** The site is a noindex preview. It never holds, moves or sees your crypto, keys or seed phrase, and it is a planning and education tool. **These tools have not had an independent security review.** As on any web page, never type a real seed phrase, private key or wallet password into them. Nothing here is legal, tax or financial advice.
 
 ## What the project is
 

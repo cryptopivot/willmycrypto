@@ -1,7 +1,7 @@
 # Will My Crypto: site and prototype tools
 
 Plain static site: HTML, CSS, vanilla JavaScript, one small PHP form handler. No build step, no dependencies, no CDNs.
-**Prototype. Not independently audited. Not legal or financial advice. Do not use for real funds.**
+**Early preview. Not independently audited. Not legal, tax or financial advice. The site never holds, moves or sees your crypto, keys or seed phrase. Never type a real seed phrase, private key or wallet password into any web page, including this one.**
 
 ## Pages
 | Page | What it is | Code |
@@ -23,7 +23,7 @@ Navy/teal with a gold accent. Fonts are self-hosted (Inter, Instrument Serif; SI
 ```
 node tests/run.js        # Node 18+, no dependencies
 ```
-Covers Shamir (all k-subsets, too few shares, mixed plans, typos), letter lock/unlock (wrong passphrase, tampering, a fixture made by `letter.html`), the full letter + split + claim round trip, the check-in schedule, the secret guard, and the strength/brute-force maths (21 tests, including checks that only the quiz page can contact the counter, that the demo pages still block all network connections, and that the error pages are self-contained).
+Covers Shamir (all k-subsets, too few shares, mixed plans, typos), letter lock/unlock (wrong passphrase, tampering, a fixture made by `letter.html`), the full letter + split + claim round trip, the check-in schedule, the secret guard, and the strength/brute-force maths (22 tests, including checks that only the quiz page can contact the counter, that the demo pages still block all network connections, and that the error pages are self-contained).
 
 Shares can also be combined without this site: `tools/combine_shares.py.txt` (rename to `.py`).
 

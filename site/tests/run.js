@@ -233,5 +233,16 @@ function subsets(arr, k) { const out = []; (function rec(s, cur) { if (cur.lengt
       assert.ok(!/src="\/js\/(?!fx\.js)/.test(h), code + " loads a script other than fx.js");
     }
   });
+  await t("Wording: no page says the site is not for real funds; the never-type-a-seed-phrase advice stays", () => {
+    const root = path.join(__dirname, "..");
+    const files = fs.readdirSync(root).filter(n => /\.(html|md)$/.test(n)).concat(fs.readdirSync(path.join(root, "js")).map(n => "js/" + n));
+    for (const f of files) {
+      const src = fs.readFileSync(path.join(root, f), "utf8");
+      assert.ok(!/real funds|real money|not meant for real/i.test(src), f + " still talks about real funds");
+    }
+    for (const f of ["plan.html", "claim.html", "letter.html"])
+      assert.ok(/Do NOT type a seed phrase, private key, or wallet password/.test(fs.readFileSync(path.join(root, f), "utf8")), f + " lost its seed phrase warning");
+    assert.ok(/never holds, moves or sees your crypto/.test(fs.readFileSync(path.join(root, "disclaimer.html"), "utf8")));
+  });
   console.log("\n" + passed + " tests passed");
 })().catch(e => { console.error("FAIL:", e && e.stack || e); process.exit(1); });

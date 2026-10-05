@@ -66,7 +66,7 @@
   }
   function dlAll() {
     if (!last) return;
-    var t = "WILL MY CRYPTO - PLAN OUTPUT (PROTOTYPE, NOT FOR REAL FUNDS)\n\nThe locked letter is safe to store anywhere. The shares are the key: give each to a different person or place.\nAny " + last.k + " of the " + last.n + " shares open the letter. Never keep them all together.\n\n" + last.block + "\n";
+    var t = "WILL MY CRYPTO - PLAN OUTPUT (EARLY PREVIEW, NOT AUDITED)\n\nThe locked letter is safe to store anywhere. The shares are the key: give each to a different person or place.\nAny " + last.k + " of the " + last.n + " shares open the letter. Never keep them all together.\n\n" + last.block + "\n";
     last.shares.forEach(function (s, i) { t += "\nSHARE " + (i + 1) + " (" + last.lab[i] + ")\n" + s + "\n"; });
     var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([t], { type: "text/plain" })); a.download = "will-my-crypto-demo-plan.txt";
     document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
