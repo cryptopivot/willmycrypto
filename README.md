@@ -37,7 +37,7 @@ site/
 └── LICENSE.txt, README.md     License and a short technical overview
 ```
 
-The live site also runs a small server-side form handler for the partner and quiz-email forms. It is not part of this repository, so those two forms do nothing when the files are used on their own.
+The live site also runs a small server-side script for the partner and quiz-email forms. It is not part of this repository, so those forms do nothing when the files are used on their own.
 
 ## Running the tests
 
@@ -62,7 +62,7 @@ To report a problem, use the contact in [`site/.well-known/security.txt`](site/.
 
 ## Checking the files
 
-`site/checksums.txt` lists SHA-256 hashes of the files the live site serves. From `site/`, `sha256sum -c checksums.txt` verifies them. One listed file, `contact.php`, is deliberately not in this repository, so that single entry reports as missing.
+`site/checksums.txt` lists SHA-256 hashes of the static files the live site serves (the server-side form handler is not listed and not included here). From `site/`, `sha256sum -c checksums.txt` verifies them, and `./make-checksums.sh` regenerates the list.
 
 ## License
 

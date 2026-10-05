@@ -13,7 +13,7 @@ Plain static site: HTML, CSS, vanilla JavaScript, one small PHP form handler. No
 | `claim.html` | Heir combines shares and opens the letter | `js/claim.js` |
 | `encryption.html` | "How hard is it to crack?": exact numbers, sand-grain animation, guess machine, passphrase tester | `js/strength.js`, `js/meter.js`, `js/crack.js` |
 | `trust.html` | Open-source statement, formats, how to verify | |
-| `contact.php`, `config.php` | Partner intake and optional quiz email; mail goes to the single address in `config.php` | |
+| (server side) | A small server-side handler sends the partner form and the optional quiz email. It is not part of the public repository. | |
 
 ## Design
 Navy/teal with a gold accent. Fonts are self-hosted (Inter, Instrument Serif; SIL OFL, see `fonts/FONTS.txt`). Effects (`js/fx.js`: word reveal, scroll reveal, cursor glow, tilt) are plain JS/CSS and switch off under `prefers-reduced-motion`. Logo files: `logo/*.svg`, `favicon.svg`, `og-image.png`.
@@ -23,7 +23,7 @@ Navy/teal with a gold accent. Fonts are self-hosted (Inter, Instrument Serif; SI
 ```
 node tests/run.js        # Node 18+, no dependencies
 ```
-Covers Shamir (all k-subsets, too few shares, mixed plans, typos), letter lock/unlock (wrong passphrase, tampering, a fixture made by `letter.html`), the full letter + split + claim round trip, the check-in schedule, the secret guard, and the strength/brute-force maths (15 tests).
+Covers Shamir (all k-subsets, too few shares, mixed plans, typos), letter lock/unlock (wrong passphrase, tampering, a fixture made by `letter.html`), the full letter + split + claim round trip, the check-in schedule, the secret guard, and the strength/brute-force maths (17 tests).
 
 Shares can also be combined without this site: `tools/combine_shares.py.txt` (rename to `.py`).
 
